@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum DrillType {
+  SPRINT
+  SHUFFLE
+  JUMP
+  THROW
+  KICK
+  SHOOTING
+}
+
+enum AgeBand {
+  AGE_8_10
+  AGE_11_13
+  AGE_14_18
+}
+
+model Program {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  athletes    Athlete[]
+}
+
+model Athlete {
+  id           Int              @id @default(autoincrement())
+  name         String
+  ageBand      AgeBand
+  sportFocus   String
+  parentEmail  String?
+  consent      Boolean          @default(false)
+  baselineDate DateTime?
+  level        Int              @default(1)
+  xp           Int              @default(0)
+  program      Program          @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programId    Int
+  survey       SurveyResponse?
+  sessions     Session[]
+  createdAt    DateTime         @default(now())
+}
+
+model SurveyResponse {
+  id              Int      @id @default(autoincrement())
+  athlete         Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  athleteId       Int      @unique
+  avatarTheme     String
+  motivationStyle String
+  goals           String
+  confidence      Int
+  injuries        String?
+  createdAt       DateTime @default(now())
+}
+
+model Session {
+  id           Int             @id @default(autoincrement())
+  athlete      Athlete         @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  athleteId    Int
+  drillType    DrillType
+  videoPath    String
+  usedSample   Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  analysis     AnalysisResult?
+}
+
+model AnalysisResult {
+  id           Int       @id @default(autoincrement())
+  session      Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId    Int       @unique
+  provider     String
+  metrics      Json
+  cues         Json
+  reportCard   Json
+  practicePlan String
+  createdAt    DateTime  @default(now())
+}

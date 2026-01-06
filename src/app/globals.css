@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-950 text-gray-100 min-h-screen;
+}
+
+a {
+  @apply text-secondary;
+}
+
+.card {
+  @apply bg-gray-900 border border-gray-800 rounded-xl p-4 shadow-lg;
+}
+
+.button {
+  @apply inline-flex items-center justify-center rounded-md bg-brand px-4 py-2 text-white font-semibold hover:bg-emerald-700 transition;
+}
+
+.input {
+  @apply w-full rounded-md border border-gray-700 bg-gray-900 px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-secondary;
+}
+
+.label {
+  @apply text-sm font-medium text-gray-200;
+}
+
+.table {
+  @apply w-full text-sm text-left text-gray-200;
+}
+
+.table thead {
+  @apply text-xs uppercase text-gray-400;
+}
+
+.table th,
+.table td {
+  @apply px-4 py-3;
+}
